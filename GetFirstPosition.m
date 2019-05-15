@@ -1,0 +1,88 @@
+function varargout = GetFirstPosition(varargin)
+% GETFIRSTPOSITION MATLAB code for GetFirstPosition.fig
+%      GETFIRSTPOSITION, by itself, creates a new GETFIRSTPOSITION or raises the existing
+%      singleton*.
+%
+%      H = GETFIRSTPOSITION returns the handle to a new GETFIRSTPOSITION or the handle to
+%      the existing singleton*.
+%
+%      GETFIRSTPOSITION('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in GETFIRSTPOSITION.M with the given input arguments.
+%
+%      GETFIRSTPOSITION('Property','Value',...) creates a new GETFIRSTPOSITION or raises the
+%      existing singleton*.  Starting from the left, property value pairs are
+%      applied to the GUI before GetFirstPosition_OpeningFcn gets called.  An
+%      unrecognized property name or invalid value makes property application
+%      stop.  All inputs are passed to GetFirstPosition_OpeningFcn via varargin.
+%
+%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%      instance to run (singleton)".
+%
+% See also: GUIDE, GUIDATA, GUIHANDLES
+
+% Edit the above text to modify the response to help GetFirstPosition
+
+% Last Modified by GUIDE v2.5 10-May-2019 22:30:11
+
+% Begin initialization code - DO NOT EDIT
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+                   'gui_Singleton',  gui_Singleton, ...
+                   'gui_OpeningFcn', @GetFirstPosition_OpeningFcn, ...
+                   'gui_OutputFcn',  @GetFirstPosition_OutputFcn, ...
+                   'gui_LayoutFcn',  [] , ...
+                   'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+% End initialization code - DO NOT EDIT
+
+
+% --- Executes just before GetFirstPosition is made visible.
+function GetFirstPosition_OpeningFcn(hObject, eventdata, handles, varargin)
+% This function has no output args, see OutputFcn.
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% varargin   command line arguments to GetFirstPosition (see VARARGIN)
+
+% Choose default command line output for GetFirstPosition
+handles.output = hObject;
+
+% Update handles structure
+guidata(hObject, handles);
+
+axes(handles.axes2);
+imshow(imread('.\UIfile\logo.jpg'));
+
+img_dir=varargin{1};
+guidata(hObject,handles);
+FirstFrame = imread(img_dir(1).name);
+axes(handles.axes1);
+imshow(uint8(FirstFrame));
+mouse=imrect;
+pos=getPosition(mouse);% x1 y1 w h
+ROI=[pos(1),pos(2),pos(3),pos(4)]; 
+rectangle('Position',ROI,'LineWidth',2,'EdgeColor','r');
+global FistPos;
+FistPos=pos;
+
+% UIWAIT makes GetFirstPosition wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
+
+
+% --- Outputs from this function are returned to the command line.
+function varargout = GetFirstPosition_OutputFcn(hObject, eventdata, handles) 
+% varargout  cell array for returning output args (see VARARGOUT);
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get default command line output from handles structure
+varargout{1} = handles.output;
